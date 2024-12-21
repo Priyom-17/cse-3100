@@ -54,3 +54,4 @@ The task is to add the following features to the cat adoption website demonstrat
 4. **About Us page** (2 marks) - create a new page “About Us” that will show some static content. See example.
 
 5. **Code quality** (1 mark) - Readability, comments, and adherence to coding standards
+6
