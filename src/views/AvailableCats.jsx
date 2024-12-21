@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const availableCats = [
   { name: 'Whiskers', age: '2', breed: 'Sphynx' },
@@ -8,7 +9,8 @@ const availableCats = [
   { name: 'Luna', age: '4', breed: 'Birman' },
   { name: 'Simba', age: '2', breed: 'Abyssinian' },
 ];
-const breeds=['All','Sphynx','Bengal', 'Siamese', 'Persian', 'Birman', 'Abyssinian'];
+
+const breeds = ['All', 'Sphynx', 'Bengal', 'Siamese', 'Persian', 'Birman', 'Abyssinian'];
 
 export default function AvailableCats() {
   const [cats, setCats] = useState([]);
@@ -17,16 +19,18 @@ export default function AvailableCats() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Fetch cat images from an API endpoint and assign it to the featuredCats list
     const fetchCatImages = async () => {
       try {
-        const responses = await Promise.all(availableCats.map(() => fetch('https://api.thecatapi.com/v1/images/search').then((res) => res.json())));
+        const responses = await Promise.all(availableCats.map(() =>
+          fetch('https://api.thecatapi.com/v1/images/search').then((res) => res.json())
+        ));
         const catsWithImages = availableCats.map((cat, index) => ({
           ...cat,
           image: responses[index][0].url,
         }));
 
         setCats(catsWithImages);
+        setFilteredCats(catsWithImages); // Set initial filtered cats
       } catch (error) {
         console.error('Error fetching cat images:', error);
       }
@@ -35,21 +39,21 @@ export default function AvailableCats() {
     fetchCatImages();
   }, []);
 
-  // Handle breed filtering
   const handleBreedChange = (event) => {
     const breed = event.target.value;
     setSelectedBreed(breed);
     filterCats(breed, searchTerm);
   };
 
-  // Handle search filtering
   const handleSearchChange = (event) => {
     const term = event.target.value;
     setSearchTerm(term);
-    filterCats(selectedBreed, term);
   };
 
-  // Filter cats based on breed and search term
+  const handleSearch = () => {
+    filterCats(selectedBreed, searchTerm);
+  };
+
   const filterCats = (breed, term) => {
     let filtered = cats;
 
@@ -65,24 +69,28 @@ export default function AvailableCats() {
 
   return (
     <section className="text-center mt-4">
-      <h2>Available Cats</h2>
-      <p>Meet our adorable cats looking for their forever home!</p>
-       {/* Filters */}
-       <div className="mb-3">
-        <select value={selectedBreed} onChange={handleBreedChange} className="form-select">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2>Purrfect Adoption</h2>
+        
+      </div>
+      <p>Available cats</p>
+
+      {/* Filters */}
+      <div className="mb-3 d-flex justify-content-center">
+        <select value={selectedBreed} onChange={handleBreedChange} className="form-select me-2" style={{ width: '200px' }}>
           {breeds.map((breed, index) => (
             <option key={index} value={breed}>{breed}</option>
           ))}
         </select>
-      </div>
-      <div className="mb-3">
         <input
           type="text"
           placeholder="Search by name"
           value={searchTerm}
           onChange={handleSearchChange}
-          className="form-control"
+          className="form-control me-2"
+          style={{ width: '200px' }}
         />
+        <button className="btn btn-primary" onClick={handleSearch}>Search</button>
       </div>
 
       <div className="mt-2 row g-4 cats-container" id="cats-container">
@@ -93,7 +101,7 @@ export default function AvailableCats() {
               <div className="cat-info">
                 <h3 className="h5 mb-1">{cat.name}</h3>
                 <p className="mb-0">Age: {cat.age}</p>
-                <p className='mb-0'>Breed:{cat.breed}</p>
+                <p className="mb-0">Breed: {cat.breed}</p>
               </div>
             </div>
           </div>

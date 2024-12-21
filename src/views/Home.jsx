@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const featuredCats = [
   { name: 'Whiskers', age: '2', breed: 'Sphynx' },
@@ -13,7 +14,9 @@ export default function Home() {
     // Fetch cat images from an API endpoint and assign it to the featuredCats list
     const fetchCatImages = async () => {
       try {
-        const responses = await Promise.all(featuredCats.map(() => fetch('https://api.thecatapi.com/v1/images/search').then((res) => res.json())));
+        const responses = await Promise.all(featuredCats.map(() =>
+          fetch('https://api.thecatapi.com/v1/images/search').then((res) => res.json())
+        ));
         const catsWithImages = featuredCats.map((cat, index) => ({
           ...cat,
           image: responses[index][0].url,
@@ -31,17 +34,20 @@ export default function Home() {
   return (
     <>
       <section className="text-center mt-4">
-        <h2>Welcome to Purrfect Adoption</h2>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h2>Welcome to Purrfect Adoption</h2>
+
+        </div>
+
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luc Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luc Lorem
-          ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luc
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lacus. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lacus.
         </p>
       </section>
 
       <section className="mt-5">
-        <h2>Featured cats</h2>
-        <div className="mt-2 row g-4" id="cats-container"></div>
-        <div className="mt-2 row g-4" id="cats-container">
+        <h2>Featured Cats</h2>
+        <div className="mt-2 row g-4">
           {cats.map((cat, i) => (
             <div key={i} className="col-md-4">
               <div className="cat-card">

@@ -13,9 +13,13 @@ const BaseLayout = () => {
         <nav>
           <ul className="nav">
             <li className="nav-item">
-              <Link className="nav-link" to="/available-cats">
-                Available Cats
-              </Link>
+            <Link className="nav-link" to="/available-cats">Available Cats</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/contact-us">Contact Us</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/about-us">About Us</Link>
             </li>
           </ul>
         </nav>
